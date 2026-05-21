@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>嗓音训练打卡系统</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button id="backBtn" onclick="goBack()" style="display:none;">← 返回</button>
+    <div id="loginPage" class="page active">
+        <div class="container">
+            <h1>🎤 嗓音训练打卡系统</h1>
+            <p class="subtitle">言语职业用嗓人群专属方案</p>
+            <div class="form-group">
+                <label>👤 志愿者编号：</label>
+                <input type="text" id="volunteerId" placeholder="请输入志愿者编号" required>
+            </div>
+            <button id="loginBtn" onclick="login()">开始训练 →</button>
+            <button onclick="showAdminLogin()" class="admin-btn">🔒 管理员入口</button>
+        </div>
+    </div>
+
+    <div id="trainingPageMusic" class="page">
+        <div class="container">
+            <h1>🎵 声乐学生专属训练方案</h1>
+            <div class="week-selector">
+                <label>当前训练周数：</label>
+                <select id="weekSelectMusic" onchange="updateTrainingContent('music')">
+                    <option value="week1_12">第1-12周：基础放松+科学发声</option>
+                </select>
+            </div>
+            <div class="training-content">
+                <div class="training-section">
+                    <h3>📋 本周训练内容</h3>
+                    <div id="trainingTextMusic" class="training-text"></div>
+                </div>
+                <!-- 声乐学生：基础放松视频 -->
+                <div id="videoSectionMusic" class="video-section" style="display:none;">
+                    <h3>🎬 基础放松演示视频</h3>
+                    <div class="video-grid">
+                        <div class="video-item"><video id="videoMusic1" controls playsinline><source src="" type="video/mp4"></video><span>动作1：抬头张嘴</span></div>
+                        <div class="video-item"><video id="videoMusic2" controls playsinline><source src="" type="video/mp4"></video><span>动作2：绕唇</span></div>
+                        <div class="video-item"><video id="videoMusic3" controls playsinline><source src="" type="video/mp4"></video><span>动作3：舌尖绕唇</span></div>
+                        <div class="video-item"><video id="videoMusic4" controls playsinline><source src="" type="video/mp4"></video><span>动作4：舌根伸缩</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button onclick="completeTraining('music')">✅ 完成今日训练打卡</button>
+                <button onclick="goToCalendar()">📅 查看打卡记录</button>
+                <button onclick="logout()">🚪 退出登录</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="trainingPageNonMusic" class="page">
+        <div class="container">
+            <h1>🗣️ 非声乐学生训练方案</h1>
+            <div class="week-selector">
+                <label>当前训练周数：</label>
+                <select id="weekSelectNonMusic" onchange="updateTrainingContent('nonMusic')">
+                    <option value="week1_2">第1-2周：基础放松训练</option>
+                    <option value="week3_6">第3-6周：放松+呼吸训练</option>
+                    <option value="week7_10">第7-10周：放松+科学发声重建</option>
+                    <option value="week11_12">第11-12周：咬字+吐字归音训练</option>
+                </select>
+            </div>
+            <div class="training-content">
+                <div class="training-section">
+                    <h3>📋 本周训练内容</h3>
+                    <div id="trainingTextNonMusic" class="training-text"></div>
+                </div>
+                <!-- 第1-2周：基础放松视频 -->
+                <div id="videoSection1_2" class="video-section" style="display:none;">
+                    <h3>🎬 基础放松演示视频</h3>
+                    <div class="video-grid">
+                        <div class="video-item"><video id="video1_2_1" controls playsinline><source src="" type="video/mp4"></video><span>动作1：抬头张嘴</span></div>
+                        <div class="video-item"><video id="video1_2_2" controls playsinline><source src="" type="video/mp4"></video><span>动作2：绕唇</span></div>
+                        <div class="video-item"><video id="video1_2_3" controls playsinline><source src="" type="video/mp4"></video><span>动作3：舌尖绕唇</span></div>
+                        <div class="video-item"><video id="video1_2_4" controls playsinline><source src="" type="video/mp4"></video><span>动作4：舌根伸缩</span></div>
+                    </div>
+                </div>
+                <!-- 第3-6周：放松训练视频 -->
+                <div id="videoSection3_6_relax" class="video-section" style="display:none;">
+                    <h3>🎬 放松训练演示视频</h3>
+                    <div class="video-grid">
+                        <div class="video-item"><video id="video3_6_relax_1" controls playsinline><source src="" type="video/mp4"></video><span>动作1：抬头张嘴</span></div>
+                        <div class="video-item"><video id="video3_6_relax_2" controls playsinline><source src="" type="video/mp4"></video><span>动作2：绕唇</span></div>
+                        <div class="video-item"><video id="video3_6_relax_3" controls playsinline><source src="" type="video/mp4"></video><span>动作3：舌尖绕唇</span></div>
+                        <div class="video-item"><video id="video3_6_relax_4" controls playsinline><source src="" type="video/mp4"></video><span>动作4：舌根伸缩</span></div>
+                    </div>
+                </div>
+                <!-- 第3-6周：呼吸训练视频 -->
+                <div id="videoSection3_6_breath" class="video-section" style="display:none;">
+                    <h3>🌬️ 呼吸训练演示视频</h3>
+                    <div class="video-grid">
+                        <div class="video-item"><video id="video3_6_breath_1" controls playsinline><source src="" type="video/mp4"></video><span>基础呼吸训练</span></div>
+                        <div class="video-item"><video id="video3_6_breath_2" controls playsinline><source src="" type="video/mp4"></video><span>控气稳气训练</span></div>
+                        <div class="video-item"><video id="video3_6_breath_3" controls playsinline><source src="" type="video/mp4"></video><span>小狗哈气</span></div>
+                    </div>
+                </div>
+                <!-- 第7-10周：放松训练视频 -->
+                <div id="videoSection7_10_relax" class="video-section" style="display:none;">
+                    <h3>🎬 放松训练演示视频</h3>
+                    <div class="video-grid">
+                        <div class="video-item"><video id="video7_10_relax_1" controls playsinline><source src="" type="video/mp4"></video><span>动作1：抬头张嘴</span></div>
+                        <div class="video-item"><video id="video7_10_relax_2" controls playsinline><source src="" type="video/mp4"></video><span>动作2：绕唇</span></div>
+                        <div class="video-item"><video id="video7_10_relax_3" controls playsinline><source src="" type="video/mp4"></video><span>动作3：舌尖绕唇</span></div>
+                        <div class="video-item"><video id="video7_10_relax_4" controls playsinline><source src="" type="video/mp4"></video><span>动作4：舌根伸缩</span></div>
+                    </div>
+                </div>
+                <!-- 第7-10周：科学发声模式重建视频 -->
+                <div id="videoSection7_10_vocal" class="video-section" style="display:none;">
+                    <h3>🎤 科学发声模式重建演示视频</h3>
+                    <div class="video-grid">
+                        <div class="video-item"><video id="video7_10_vocal_1" controls playsinline><source src="" type="video/mp4"></video><span>吸管共鸣训练法</span></div>
+                        <div class="video-item"><video id="video7_10_vocal_2" controls playsinline><source src="" type="video/mp4"></video><span>半打哈欠训练</span></div>
+                    </div>
+                </div>
+                <!-- 第11-12周视频（咬字训练无视频） -->
+                <div id="videoSection11_12" class="video-section" style="display:none;">
+                    <h3>🎬 放松训练演示视频</h3>
+                    <div class="video-grid">
+                        <div class="video-item"><video id="video11_12_1" controls playsinline><source src="" type="video/mp4"></video><span>动作1：抬头张嘴</span></div>
+                        <div class="video-item"><video id="video11_12_2" controls playsinline><source src="" type="video/mp4"></video><span>动作2：绕唇</span></div>
+                        <div class="video-item"><video id="video11_12_3" controls playsinline><source src="" type="video/mp4"></video><span>动作3：舌尖绕唇</span></div>
+                        <div class="video-item"><video id="video11_12_4" controls playsinline><source src="" type="video/mp4"></video><span>动作4：舌根伸缩</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button onclick="completeTraining('nonMusic')">✅ 完成今日训练打卡</button>
+                <button onclick="goToCalendar()">📅 查看打卡记录</button>
+                <button onclick="logout()">🚪 退出登录</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="calendarPage" class="page">
+        <div class="container">
+            <h1>📆 打卡日历</h1>
+            <div id="userInfo"></div>
+            <div class="month-selector">
+                <label>查看月份：</label>
+                <select id="monthSelect" onchange="changeMonth()">
+                    <!-- 由 JavaScript 动态生成 -->
+                </select>
+            </div>
+            <div id="calendar"></div>
+            <div class="calendar-legend">
+                <span class="checked">✅ 已打卡</span>
+                <span class="unchecked">❌ 未打卡</span>
+                <span class="today">📍 今日</span>
+            </div>
+            <div class="stats-box">
+                <h3>📊 训练统计</h3>
+                <div id="trainingStats"></div>
+            </div>
+            <div class="action-buttons">
+                <button onclick="backToTraining()">← 返回训练</button>
+                <button onclick="logout()">🚪 退出登录</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
